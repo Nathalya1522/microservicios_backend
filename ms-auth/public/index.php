@@ -3,24 +3,11 @@
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
-use Illuminate\Database\Capsule\Manager as Capsule;
 
 require __DIR__ . '/../vendor/autoload.php';
 
 // Configuración de la base de datos
-$capsule = new Capsule;
-$capsule->addConnection([
-    'driver'    => 'mysql',
-    'host'      => '127.0.0.1',
-    'database'  => 'db_auth',
-    'username'  => 'root',
-    'password'  => '',
-    'charset'   => 'utf8',
-    'collation' => 'utf8_unicode_ci',
-    'prefix'    => '',
-]);
-$capsule->setAsGlobal();
-$capsule->bootEloquent();
+require __DIR__ . '/../app/Config/Database.php';
 
 // Crear la app
 $app = AppFactory::create();
