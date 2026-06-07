@@ -14,7 +14,6 @@ class AuthController
         $identificador = $data['usuario'] ?? '';
         $contrasena = $data['contrasena'] ?? '';
 
-        // Buscar usuario por usuario o correo
         $usuario = Usuario::where('usuario', $identificador)
             ->orWhere('correo', $identificador)
             ->where('estado', 'activo')
@@ -72,6 +71,7 @@ class AuthController
             return $response->withHeader('Content-Type', 'application/json')->withStatus(401);
         }
 
+        // Cerrar sesión
         $usuario->token = null;
         $usuario->sesion_activa = false;
         $usuario->save();
