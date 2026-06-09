@@ -9,11 +9,13 @@ use App\Models\DetallePedido;
 
 class PedidoController
 {
+    // Listar todos los pedidos
     public function index(Request $request, Response $response)
     {
         $params = $request->getQueryParams();
         $query = Pedido::with('detalles');
 
+        // Filtrar por estado
         if (!empty($params['estado'])) {
             $query->where('estado', $params['estado']);
         }
@@ -23,8 +25,10 @@ class PedidoController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
+    // Ver detalle de un pedido
     public function show(Request $request, Response $response, $args)
     {
+        // Buscar el pedido con sus detalles
         $pedido = Pedido::with('detalles')->find($args['id']);
 
         if (!$pedido) {
@@ -39,10 +43,12 @@ class PedidoController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
+    // Crear un nuevo pedido
     public function store(Request $request, Response $response)
     {
         $data = $request->getParsedBody();
 
+        // Validar que el pedido tenga al menos un producto
         if (empty($data['productos']) || count($data['productos']) === 0) {
             $response->getBody()->write(json_encode([
                 'success' => false,
@@ -54,6 +60,7 @@ class PedidoController
         // Calcular subtotal y total
         $subtotal = 0;
         foreach ($data['productos'] as $producto) {
+            // Validar que la cantidad sea mayor a cero
             if ($producto['cantidad'] < 1) {
                 $response->getBody()->write(json_encode([
                     'success' => false,
@@ -64,6 +71,7 @@ class PedidoController
             $subtotal += $producto['precio_unitario'] * $producto['cantidad'];
         }
 
+        // Crear el pedido
         $pedido = Pedido::create([
             'mesa_id' => $data['mesa_id'],
             'fecha' => date('Y-m-d'),
@@ -73,6 +81,7 @@ class PedidoController
             'estado' => 'pendiente'
         ]);
 
+        // Crear los detalles del pedido
         foreach ($data['productos'] as $producto) {
             DetallePedido::create([
                 'pedido_id' => $pedido->id,
@@ -92,8 +101,10 @@ class PedidoController
         return $response->withHeader('Content-Type', 'application/json')->withStatus(201);
     }
 
+    // Cambiar estado del pedido
     public function update(Request $request, Response $response, $args)
     {
+        // Buscar el pedido por id
         $pedido = Pedido::find($args['id']);
 
         if (!$pedido) {
@@ -104,6 +115,7 @@ class PedidoController
             return $response->withHeader('Content-Type', 'application/json')->withStatus(404);
         }
 
+        // Actualizar el estado
         $data = $request->getParsedBody();
         $pedido->update(['estado' => $data['estado']]);
 
@@ -115,8 +127,10 @@ class PedidoController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
+    // Cancelar un pedido
     public function destroy(Request $request, Response $response, $args)
     {
+        // Buscar el pedido por id
         $pedido = Pedido::find($args['id']);
 
         if (!$pedido) {
@@ -127,6 +141,7 @@ class PedidoController
             return $response->withHeader('Content-Type', 'application/json')->withStatus(404);
         }
 
+        // Cambiar estado a cancelado
         $pedido->update(['estado' => 'cancelado']);
 
         $response->getBody()->write(json_encode([
