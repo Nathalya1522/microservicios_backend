@@ -1,0 +1,38 @@
+### Verificar que el microservicio funciona
+GET http://127.0.0.1:8002
+
+### Listar todas las mesas
+GET http://127.0.0.1:8002/mesas
+Authorization: AQUI_VA_EL_TOKEN
+
+### Crear una mesa
+POST http://127.0.0.1:8002/mesas
+Content-Type: application/json
+Authorization: AQUI_VA_EL_TOKEN
+
+### Editar una mesa
+PUT http://127.0.0.1:8002/mesas/1
+Content-Type: application/json
+Authorization: AQUI_VA_EL_TOKEN
+
+### Eliminar una mesa
+DELETE http://127.0.0.1:8002/mesas/1
+Authorization: AQUI_VA_EL_TOKEN
+
+### Listar todas las reservas
+GET http://127.0.0.1:8002/reservas
+Authorization: AQUI_VA_EL_TOKEN
+
+### Crear una reserva
+POST http://127.0.0.1:8002/reservas
+Content-Type: application/json
+Authorization: AQUI_VA_EL_TOKEN
+
+### Editar una reserva
+PUT http://127.0.0.1:8002/reservas/1
+Content-Type: application/json
+Authorization: AQUI_VA_EL_TOKEN
+
+### Cancelar una reserva
+DELETE http://127.0.0.1:8002/reservas/1
+Authorization: AQUI_VA_EL_TOKEN

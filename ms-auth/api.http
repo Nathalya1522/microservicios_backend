@@ -1,0 +1,11 @@
+### Verificar que el microservicio funciona
+GET http://127.0.0.1:8001
+
+### Login con usuario
+POST http://127.0.0.1:8001/login
+Content-Type: application/json
+
+### Logout
+POST http://127.0.0.1:8001/logout
+Content-Type: application/json
+Authorization: AQUI_VA_EL_TOKEN

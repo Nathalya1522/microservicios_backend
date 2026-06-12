@@ -1,0 +1,24 @@
+### Verificar que el microservicio funciona
+GET http://127.0.0.1:8004
+
+### Listar todos los pedidos
+GET http://127.0.0.1:8004/pedidos
+Authorization: AQUI_VA_EL_TOKEN
+
+### Ver detalle de un pedido
+GET http://127.0.0.1:8004/pedidos/1
+Authorization: AQUI_VA_EL_TOKEN
+
+### Crear un pedido
+POST http://127.0.0.1:8004/pedidos
+Content-Type: application/json
+Authorization: AQUI_VA_EL_TOKEN
+
+### Cambiar estado de un pedido
+PUT http://127.0.0.1:8004/pedidos/1
+Content-Type: application/json
+Authorization: AQUI_VA_EL_TOKEN
+
+### Cancelar un pedido
+DELETE http://127.0.0.1:8004/pedidos/1
+Authorization: AQUI_VA_EL_TOKEN

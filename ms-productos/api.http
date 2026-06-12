@@ -1,0 +1,24 @@
+### Verificar que el microservicio funciona
+GET http://127.0.0.1:8003
+
+### Listar todas las categorias
+GET http://127.0.0.1:8003/categorias
+Authorization: AQUI_VA_EL_TOKEN
+
+### Listar todos los productos
+GET http://127.0.0.1:8003/productos
+Authorization: AQUI_VA_EL_TOKEN
+
+### Crear un producto
+POST http://127.0.0.1:8003/productos
+Content-Type: application/json
+Authorization: AQUI_VA_EL_TOKEN
+
+### Editar un producto
+PUT http://127.0.0.1:8003/productos/1
+Content-Type: application/json
+Authorization: AQUI_VA_EL_TOKEN
+
+### Eliminar un producto
+DELETE http://127.0.0.1:8003/productos/1
+Authorization: AQUI_VA_EL_TOKEN
