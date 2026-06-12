@@ -3,17 +3,26 @@
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
-use App\Middleware\AuthMiddleware;
 
 require __DIR__ . '/../vendor/autoload.php';
 
 // Configuración de la base de datos
 require __DIR__ . '/../app/Config/Database.php';
 
-// Crear la app
 $app = AppFactory::create();
 
-// Configuración de CORS
+$app->addBodyParsingMiddleware();
+
+// Middleware de autenticación (omite OPTIONS)
+$app->add(function (Request $request, $handler) {
+    if ($request->getMethod() === 'OPTIONS') {
+        return $handler->handle($request);
+    }
+    $middleware = new \App\Middleware\AuthMiddleware();
+    return $middleware($request, $handler);
+});
+
+// CORS
 $app->options('/{routes:.+}', fn($req, $res) => $res);
 $app->add(function (Request $request, $handler) {
     $origin = $request->getHeaderLine('Origin') ?: '*';
@@ -24,9 +33,6 @@ $app->add(function (Request $request, $handler) {
         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
         ->withHeader('Access-Control-Allow-Credentials', 'true');
 });
-
-// Middleware de autenticación
-$app->add(AuthMiddleware::class);
 
 // Cargar rutas
 $routes = require __DIR__ . '/../app/routes.php';

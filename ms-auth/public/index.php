@@ -12,6 +12,9 @@ require __DIR__ . '/../app/Config/Database.php';
 // Crear la app
 $app = AppFactory::create();
 
+// AGREGAR ESTA LÍNEA - permite parsear JSON del body
+$app->addBodyParsingMiddleware();
+
 // Configuración de CORS
 $app->options('/{routes:.+}', fn($req, $res) => $res);
 $app->add(function (Request $request, $handler) {

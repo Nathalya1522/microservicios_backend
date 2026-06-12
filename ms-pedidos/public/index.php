@@ -10,10 +10,20 @@ require __DIR__ . '/../vendor/autoload.php';
 // Configuración de la base de datos
 require __DIR__ . '/../app/Config/Database.php';
 
-// Crear la app
 $app = AppFactory::create();
 
-// Configuración de CORS
+$app->addBodyParsingMiddleware();
+
+// El AuthMiddleware solo aplica si NO es una petición OPTIONS
+$app->add(function (Request $request, $handler) {
+    if ($request->getMethod() === 'OPTIONS') {
+        return $handler->handle($request);
+    }
+    $middleware = new \App\Middleware\AuthMiddleware();
+    return $middleware($request, $handler);
+});
+
+// CORS (se agrega de último, se ejecuta primero)
 $app->options('/{routes:.+}', fn($req, $res) => $res);
 $app->add(function (Request $request, $handler) {
     $origin = $request->getHeaderLine('Origin') ?: '*';
@@ -24,9 +34,6 @@ $app->add(function (Request $request, $handler) {
         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
         ->withHeader('Access-Control-Allow-Credentials', 'true');
 });
-
-// Middleware de autenticación
-$app->add(AuthMiddleware::class);
 
 // Cargar rutas
 $routes = require __DIR__ . '/../app/routes.php';
