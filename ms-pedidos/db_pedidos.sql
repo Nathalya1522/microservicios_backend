@@ -7,6 +7,13 @@
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
+
+-- Crear la base de datos si no existe
+CREATE DATABASE IF NOT EXISTS `db_pedidos`;
+
+-- Indicarle al servidor que use esta base de datos para lo que sigue
+USE `db_pedidos`;
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
