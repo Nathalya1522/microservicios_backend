@@ -56,6 +56,9 @@ Terminal 4:
 cd ms-pedidos
 php -S 127.0.0.1:8004 -t public
 
+ruta de el fronent
+php -S 127.0.0.1:5500
+
 11. Verificar funcionamiento:
 
 http://127.0.0.1:8001
